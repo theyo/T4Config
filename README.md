@@ -1,6 +1,6 @@
 # T4Config
 
-A down and dirty way to have strongly typed Config Settings and Connection Strings using in your projects by using T4.
+A down and dirty way to have strongly typed Config Settings and Connection Strings in your projects by using T4.
 
 In a nutshell we create an interface called IConfigurations/ IConnectionStrings, so you can do all your fancy DI/IoC stuff, and a concrete implementation called Configurations/ ConnectionStrings. (both names totally customizable.
 
@@ -24,6 +24,7 @@ public interface IConfigurations
 	string Key1 { get; }
 	Guid Key2 { get; }
 	int Key3 { get; }
+	bool Key4 { get; }
 }
 
 public class Configurations : IConfigurations
@@ -31,6 +32,7 @@ public class Configurations : IConfigurations
 	private static readonly Lazy<string> _key1 = new Lazy<string>(() => ConfigurationManager.AppSettings["Key1"]);
 	private static readonly Lazy<Guid> _key2 = new Lazy<Guid>(() => new Guid(ConfigurationManager.AppSettings["Key2"]));
 	private static readonly Lazy<int> _key3 = new Lazy<int>(() => Convert.ToInt32(ConfigurationManager.AppSettings["Key3"]));
+	private static readonly Lazy<bool> _key3 = new Lazy<bool>(() => Convert.ToBoolean(ConfigurationManager.AppSettings["Key4"]));
 
 	public virtual string Key1 
 	{
@@ -51,6 +53,13 @@ public class Configurations : IConfigurations
 		get 
 		{
 			return _key3.Value;
+		}
+	}
+	public virtual bool Key4 
+	{
+		get 
+		{
+			return _key4.Value;
 		}
 	}
 }
@@ -81,9 +90,10 @@ Can be install from Nuget as well;
 
     Install-Package T4Config
 
+https://www.nuget.org/packages/T4Config/
+
 ## How do I do it?
-- Copy the Configurations.tt file from the src directory to your project.
-- Update the configFile value to the proper config file (web or app).
-- Right click on the file and click "Run Custom Tool".
+- Copy the Configurations.tt file to the src directory to your project (or install via nuget).
+- Right click on the Configurations.tt file and click "Run Custom Tool".
 
 Enjoy!
